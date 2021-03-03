@@ -1,0 +1,60 @@
+.buttonBar {
+  padding-top: 20px;
+  display: flex;
+  vertical-align: middle;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 40px;
+  width: 100%;
+  text-align: center;
+}
+.MuiContainer-root {
+  padding: 0 !important;
+  margin: 0;
+}
+
+.buttonBar li {
+  list-style: none;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 3px;
+  padding: 0;
+}
+
+.buttonBar li button {
+  border: none;
+  background: #e79413;
+  color: transparent;
+  cursor: pointer;
+  display: block;
+  height: 15px;
+  width: 15px;
+  border-radius: 7.5px;
+}
+
+.buttonBar li:global(.slick-active) button {
+  background-color: rgb(0, 172, 193);
+}
+
+.buttonBar li button:hover,
+.buttonBar li button:focus {
+  background: rgb(0, 172, 193);
+  outline: 0;
+}
+
+.hello-word {
+  color: red;
+}
+.MuiContainer-root {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 !important;
+}
+@media (min-width: 600px) {
+  .MuiContainer-root {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin: 0 !important;
+  }
+}
+
