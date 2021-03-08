@@ -20,6 +20,8 @@ import ProductList from "./screens/productList";
 import 'antd/dist/antd.css';
 import ProductEdit from "./screens/productEdit";
 import OrderList from "./screens/orderList";
+// @ts-ignore
+import MessengerCustomerChat from "react-messenger-customer-chat";
 
 function App() {
   return (
@@ -48,6 +50,11 @@ function App() {
         </main>
         <Footer />
       </Router>
+      <MessengerCustomerChat
+        pageId="105148294795027"
+        appId="485577429489210"
+        // htmlRef="<REF_STRING>"
+      />
     </div>
   );
 }

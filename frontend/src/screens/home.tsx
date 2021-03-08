@@ -8,8 +8,6 @@ import { listProducts } from "../actions/productActions";
 import ProductCarousel from "../components/carousel";
 import { Link } from "react-router-dom";
 import Meta from "../components/meta";
-// @ts-ignore
-import MessengerCustomerChat from "react-messenger-customer-chat";
 
 interface interfaceProps {
   products: Array<any>;
@@ -54,11 +52,6 @@ const Home = (props: interfaceProps) => {
           ))}
         </Row>
       )}
-      <MessengerCustomerChat
-        pageId="105148294795027"
-        appId="485577429489210"
-        // htmlRef="<REF_STRING>"
-      />
     </>
   );
 };
