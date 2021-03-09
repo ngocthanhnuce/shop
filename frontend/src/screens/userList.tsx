@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link } from "react-router-dom";
 import { deleteUser, listUsers, logout } from "../actions/userActions";
 import Loader from "../components/loader";
 import Message from "../components/message";
+import { Table } from "antd";
 
 interface interfaceProps {
   history: any;
@@ -45,6 +46,73 @@ const UserList = (props: interfaceProps) => {
     }
   }, [dispatch, history, userInfo, successDelete]);
 
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'NAME',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'EMAIL',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'ADMIN',
+      dataIndex: 'admin',
+      key: 'admin',
+    },
+    {
+      title: 'ACTION',
+      dataIndex: 'action',
+      key: 'action',
+      render: (index: any, record: any) => {
+        return (
+          <>
+            <LinkContainer to={`/admin/user/${record.id}/edit`}>
+                    <Button variant="light" className="btn-sm">
+                      <i className="fas fa-edit"></i>
+                    </Button>
+                  </LinkContainer>
+                  <Button
+                    variant="danger"
+                    className="btn-sm"
+                    onClick={() => deleteHandler(record.id)}
+                  >
+                    <i className="fas fa-trash"></i>
+                  </Button>
+          </>
+        )
+      }
+    },
+  ]
+
+  const renderStyleAdminGreen = () => {
+    return (
+      <i className="fas fa-check" style={{ color: "green" }}></i>
+    )
+  }
+
+  const renderStyleAdminRed = () => {
+    return (
+      <i className="fas fa-times" style={{ color: "red" }}></i>
+    )
+  }
+
+  const dataSource = () => {
+    return users?.map((user: any) => ({
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      admin: user.isAdmin ? renderStyleAdminGreen() : renderStyleAdminRed()
+    }))
+  }
+
   return (
     <>
       <h2>User List</h2>
@@ -54,49 +122,7 @@ const UserList = (props: interfaceProps) => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm" style={{marginTop: '15px'}}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ADMIN</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user: any) => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
-                </td>
-                <td>
-                  {user.isAdmin ? (
-                    <i className="fas fa-check" style={{ color: "green" }}></i>
-                  ) : (
-                    <i className="fas fa-times" style={{ color: "red" }}></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                    <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit"></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => deleteHandler(user._id)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <Table columns={columns} dataSource={dataSource()} />
       )}
     </>
   );

@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
-import { Table, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { listOrders } from "../actions/orderActions";
 import Loader from "../components/loader";
 import Message from "../components/message";
+import { Table } from "antd";
 
 interface interfaceProps {
   history: any;
@@ -27,6 +28,70 @@ const OrderList = (props: interfaceProps) => {
     }
   }, [dispatch, history, userInfo]);
 
+  const columns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "1",
+    },
+    {
+      title: "USER",
+      dataIndex: "user",
+      key: "2",
+    },
+    {
+      title: "DATE",
+      dataIndex: "date",
+      key: "3",
+    },
+    {
+      title: "TOTAL",
+      dataIndex: "total",
+      key: "4",
+    },
+    {
+      title: "PAID",
+      dataIndex: "paid",
+      key: "5",
+    },
+    {
+      title: "DELIVERED",
+      dataIndex: "delivered",
+      key: "6",
+    },
+    {
+      title: "ACTION",
+      dataIndex: "action",
+      key: "7",
+      render: (index: any, record: any) => {
+        return (
+          <div>
+            <LinkContainer to={`/order/${record.id}`}>
+              <Button variant="light" className="btn-sm">
+                Details
+              </Button>
+            </LinkContainer>
+          </div>
+        );
+      },
+    },
+  ];
+  const renderStyleTime = () => {
+    return (
+      <i className="fas fa-times" style={{ color: "red" }}></i>
+    )
+  }
+  const dataSource = () => {
+    return orders?.map((order: any) => ({
+      id: order._id,
+      user: order.user && order.user.name,
+      date: order.createdAt.substring(0, 10),
+      total: `${order.totalPrice}$`,
+      paid: order.isPaid ? order.paidAt.substring(0, 10) : renderStyleTime(),
+      delivered: order.isDelivered ? order.deliveredAt.substring(0, 10) : renderStyleTime()
+    }));
+  };
+
   return (
     <>
       <h1>Order List</h1>
@@ -35,50 +100,7 @@ const OrderList = (props: interfaceProps) => {
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>USER</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order: any) => (
-              <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.user && order.user.name}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>${order.totalPrice}</td>
-                <td>
-                  {order.isPaid ? (
-                    order.paidAt.substring(0, 10)
-                  ) : (
-                    <i className="fas fa-times" style={{ color: "red" }}></i>
-                  )}
-                </td>
-                <td>
-                  {order.isDelivered ? (
-                    order.deliveredAt.substring(0, 10)
-                  ) : (
-                    <i className="fas fa-times" style={{ color: "red" }}></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant="light" className="btn-sm">
-                      Details
-                    </Button>
-                  </LinkContainer>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <Table columns={columns} dataSource={dataSource()} />
       )}
     </>
   );

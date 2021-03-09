@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Row, Col, Table } from "react-bootstrap";
+import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/message";
 import Loader from "../components/loader";
@@ -8,7 +8,7 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 import { listMyOrders } from "../actions/orderActions";
 import { LinkContainer } from "react-router-bootstrap";
-// import { Table } from 'antd';
+import { Table } from 'antd';
 
 interface interfaceProps {
   history: any;
@@ -64,43 +64,47 @@ const ProfileScreen = (props: interfaceProps) => {
     }
   }
 
-  // const columns = [
-  //   {
-  //     title: 'ID',
-  //     dataIndex: 'id',
-  //     key: 'id',
-  //   },
-  //   {
-  //     title: 'DATE',
-  //     dataIndex: 'date',
-  //     key: 'date',
-  //   },
-  //   {
-  //     title: 'TOTAL',
-  //     dataIndex: 'total',
-  //     key: 'total',
-  //   },
-  //   {
-  //     title: 'PAID',
-  //     dataIndex: 'paid',
-  //     key: 'paid',
-  //   },
-  //   {
-  //     title: 'DELIVERED',
-  //     dataIndex: 'delivered',
-  //     key: 'delivered',
-  //   },
-  // ]
-
-  // const dataSource = () => {
-  //   return orders?.map((order: any) => ({
-  //     key: order._id,
-  //     date: order.createdAt,
-  //     total: order.totalPrice,
-  //     paid: order.paidAt,
-  //     delivered: order.deliveredAt
-  //   }))
-  // }
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'DATE',
+      dataIndex: 'date',
+      key: 'date',
+    },
+    {
+      title: 'TOTAL',
+      dataIndex: 'total',
+      key: 'total',
+    },
+    {
+      title: 'PAID',
+      dataIndex: 'paid',
+      key: 'paid',
+    },
+    {
+      title: 'DELIVERED',
+      dataIndex: 'delivered',
+      key: 'delivered',
+    },
+  ]
+  const renderStyleTime = () => {
+    return (
+      <i className="fas fa-times" style={{ color: "red" }}></i>
+    )
+  }
+  const dataSource = () => {
+    return orders?.map((order: any) => ({
+      id: order._id,
+      date: order.createdAt,
+      total: order.totalPrice,
+      paid: order.isPaid ? order.paidAt.substring(0, 10) : renderStyleTime(),
+      delivered: order.isDelivered ? order.deliveredAt.substring(0, 10) : renderStyleTime()
+    }))
+  }
 
   return (
     <Row>
@@ -167,50 +171,8 @@ const ProfileScreen = (props: interfaceProps) => {
           <Loader />
         ) : errorOrders ? (
           <Message variant='danger'>{errorOrders}</Message>
-        ) : (
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order: any) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>
-                    {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <i className='fas fa-times' style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-                  <td>
-                    <LinkContainer to={`/order/${order._id}`}>
-                      <Button className='btn-sm' variant='light'>
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          // <Table columns={columns} dataSource={dataSource()} />
+        ) : (      
+          <Table columns={columns} dataSource={dataSource()} />
         )}
       </Col>
     </Row>

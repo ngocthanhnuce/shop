@@ -1,3 +1,4 @@
+// @ts-nocheck
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
@@ -35,7 +36,7 @@ userSchema.pre('save', async function (next) {
   }
 
   const salt = await bcrypt.genSalt(10)
-  // @ts-ignore
+
   this.password = await bcrypt.hash(this.password, salt)
 })
 
