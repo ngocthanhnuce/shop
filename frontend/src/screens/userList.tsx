@@ -48,70 +48,66 @@ const UserList = (props: interfaceProps) => {
 
   const columns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
     },
     {
-      title: 'NAME',
-      dataIndex: 'name',
-      key: 'name',
+      title: "NAME",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'EMAIL',
-      dataIndex: 'email',
-      key: 'email',
+      title: "EMAIL",
+      dataIndex: "email",
+      key: "email",
     },
     {
-      title: 'ADMIN',
-      dataIndex: 'admin',
-      key: 'admin',
+      title: "ADMIN",
+      dataIndex: "admin",
+      key: "admin",
     },
     {
-      title: 'ACTION',
-      dataIndex: 'action',
-      key: 'action',
+      title: "ACTION",
+      dataIndex: "action",
+      key: "action",
       render: (index: any, record: any) => {
         return (
           <>
             <LinkContainer to={`/admin/user/${record.id}/edit`}>
-                    <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit"></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => deleteHandler(record.id)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </Button>
+              <Button variant="light" className="btn-sm">
+                <i className="fas fa-edit"></i>
+              </Button>
+            </LinkContainer>
+            <Button
+              variant="danger"
+              className="btn-sm"
+              onClick={() => deleteHandler(record.id)}
+            >
+              <i className="fas fa-trash"></i>
+            </Button>
           </>
-        )
-      }
+        );
+      },
     },
-  ]
+  ];
 
   const renderStyleAdminGreen = () => {
-    return (
-      <i className="fas fa-check" style={{ color: "green" }}></i>
-    )
-  }
+    return <i className="fas fa-check" style={{ color: "green" }}></i>;
+  };
 
   const renderStyleAdminRed = () => {
-    return (
-      <i className="fas fa-times" style={{ color: "red" }}></i>
-    )
-  }
+    return <i className="fas fa-times" style={{ color: "red" }}></i>;
+  };
 
   const dataSource = () => {
     return users?.map((user: any) => ({
       id: user._id,
       name: user.name,
       email: user.email,
-      admin: user.isAdmin ? renderStyleAdminGreen() : renderStyleAdminRed()
-    }))
-  }
+      admin: user.isAdmin ? renderStyleAdminGreen() : renderStyleAdminRed(),
+    }));
+  };
 
   return (
     <>
