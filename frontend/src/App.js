@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
@@ -17,38 +17,56 @@ import OrderScreen from "./screens/order";
 import UserList from "./screens/userList";
 import UserEdit from "./screens/userEdit";
 import ProductList from "./screens/productList";
-import 'antd/dist/antd.css';
+import "antd/dist/antd.css";
 import ProductEdit from "./screens/productEdit";
 import OrderList from "./screens/orderList";
 // @ts-ignore
 import MessengerCustomerChat from "react-messenger-customer-chat";
+import Welcome from "./components/welcome";
 
 function App() {
+  const [show, setShow] = React.useState(true);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setShow(false);
+    }, 18e3);
+    return () => {
+      id && clearTimeout(id);
+    };
+  }, []);
+
   return (
     <div className="App">
       <Router>
-        <Header />
-        <main className="py-3" style={{minHeight: '100vh'}}>
-          <Container>
-            <Route path="/order/:id" component={OrderScreen} exact />
-            <Route path="/shipping" component={ShippingScreen} exact />
-            <Route path="/payment" component={PaymentScreen} exact />
-            <Route path="/placeorder" component={PlaceOrder} exact />
-            <Route path="/login" component={LoginScreen} exact />
-            <Route path="/register" component={RegisterScreen} exact />
-            <Route path="/profile" component={ProfileScreen} exact />
-            <Route path="/" component={Home} exact />
-            <Route path="/product/:id" component={ProductScreen} exact />
-            <Route path="/cart/:id?" component={CartScreen} exact />
-            <Route path="/admin/userlist" component={UserList} exact />
-            <Route path="/admin/user/:id/edit" component={UserEdit} exact />
-            <Route path="/admin/productlist" component={ProductList} exact />
-            <Route path='/admin/product/:id/edit' component={ProductEdit} />
-            <Route path="/admin/orderlist" component={OrderList} exact />
-            <Route path='/search/:keyword' component={Home} />
-          </Container>
-        </main>
-        <Footer />
+        {show ? (
+          <Welcome />
+        ) : (
+          <>
+            <Header />
+            <main className="py-3" style={{ minHeight: "50vh" }}>
+              <Container>
+                <Route path="/order/:id" component={OrderScreen} exact />
+                <Route path="/shipping" component={ShippingScreen} exact />
+                <Route path="/payment" component={PaymentScreen} exact />
+                <Route path="/placeorder" component={PlaceOrder} exact />
+                <Route path="/login" component={LoginScreen} exact />
+                <Route path="/register" component={RegisterScreen} exact />
+                <Route path="/profile" component={ProfileScreen} exact />
+                <Route path="/" component={Home} exact />
+                <Route path="/product/:id" component={ProductScreen} exact />
+                <Route path="/cart/:id?" component={CartScreen} exact />
+                <Route path="/admin/userlist" component={UserList} exact />
+                <Route path="/admin/user/:id/edit" component={UserEdit} exact />
+                <Route path="/admin/productlist" component={ProductList} exact />
+                <Route path="/admin/product/:id/edit" component={ProductEdit} />
+                <Route path="/admin/orderlist" component={OrderList} exact />
+                <Route path="/search/:keyword" component={Home} />
+              </Container>
+            </main>
+            <Footer />
+          </>
+        )}
       </Router>
       <MessengerCustomerChat
         pageId="105148294795027"
